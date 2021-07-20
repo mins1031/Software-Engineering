@@ -54,7 +54,59 @@
     * Git Plugin
     * Pipeline : 젠킨스의 핵심기능인 파이프라인을 관리할 수 있게 해주는 플러그인이다.
     * Docker plugin and Docker Pipeline : 도커 agent를 사용하고 젠킨스에서 도커를 사용하기 위한 플러그인이다.
-   > Pipeline
-     * 파이프라인이란 CI/CD 파이프라인을 젠킨스에 구현하기 위한 일련의 플러그인들의 집합이자 구성. 
-  
+ > Pipeline
+   * 파이프라인이란 CI/CD 파이프라인을 젠킨스에 구현하기 위한 일련의 플러그인들의 집합이자 구성이다.
+   * 즉 여러 플러그인들을 이 파이프라인에서 용도에 맞게 사용하고 정의함으로써 파이프라인을 통해 서비스가 배포된다
+   * 두가지 형태의 Pipeline syntax가 존재한다(Declarative, Scripted Pipeline).
+   * Declarative가 더 최신이고 가독성이 좋다
+   * Pipeline syntax는 아래의 Section으로 구성된다
+      1) Agent section   
+        * 젠킨스는 많은 일들을 해야 하기 때문에 혼자 하기 버겁다
+        * 여러 slave node를 두고 일을 시킬수 있는데 이처럼 어떤 젠킨스가 일을 하게 할 것인지를 지정한다
+        * 젠킨스의 노드 관리에서 새로 노드를 띄우거나 docker 이미지등을 통해서 처리할 수 있다
+      2) Post section
+        * 스테이지(밑의 3번)가 끈난 이후의 결과에 따라서 후속 조치를 취할 수 있다
+        * ex) 성공시 성공 이메일전송, 실패하면 중단 등등
+      3) Stages section
+        * 어떤 일들을 처리할 건지 일련의 stage를 정의한다(yml파일의 형태와 비슷)
+      4) Steps section
+        * 한 스테이지 안에서의 단계로 일련의 스텝을 보여준다
+        ```
+        stages {
+           stage('Prepare') {
+              steps {
+                 git url: "http://github.com/minair",
+                     branch: 'master',
+                     credentialsId: 'jenkinsgit'
+                 sh 'ls'
+                 dir ('./docs'){
+                     sh '''
+                     aws s3 sync ./ s3://namhoontest
+                     '''
+                 }
+              }
+
+              post {
+                  success {
+                     echo 'success'
+                  }
+              }
+           }
+           stage('Build') {
+              steps {
+                 echo 'Building...'
+              }
+           }
+        }
+        ```
+        * Declaratives
+         * Environment, stage, options, parameters, triggers, When 등의 Declarative가 있다.
+         * Environment -> 어떤 pipeline이나 stage scope의 환경변수 설정
+         * Parameter -> 파이프라인 실행시 파라미터 받음
+         * Triggers -> 어떤 형태로 트리거 되는가
+         * When -> 언제 실행되는가
+
+
+
+
         
