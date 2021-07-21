@@ -60,7 +60,7 @@
    * 두가지 형태의 Pipeline syntax가 존재한다(Declarative, Scripted Pipeline).
    * Declarative가 더 최신이고 가독성이 좋다
    * Pipeline syntax는 아래의 Section으로 구성된다
-      1) Agent section   
+      1) Agent section    
         * 젠킨스는 많은 일들을 해야 하기 때문에 혼자 하기 버겁다
         * 여러 slave node를 두고 일을 시킬수 있는데 이처럼 어떤 젠킨스가 일을 하게 할 것인지를 지정한다
         * 젠킨스의 노드 관리에서 새로 노드를 띄우거나 docker 이미지등을 통해서 처리할 수 있다
