@@ -213,4 +213,5 @@
  3) prepareStatement 사용하기
  * prepareStatement를 사용하면 특수문자를 자동으로 escaping 해준다.(전달인자를 ?로 받는것) 이를 활용해 서버에서 필터링 과정을 통해 공격을 방어 할 수 있다.   
 
-
+### 멀티모듈
+**회사 코드와 https://techblog.woowahan.com/2637/ 블로그 글을 참고하여 이해용도로 작성**
