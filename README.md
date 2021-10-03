@@ -213,5 +213,27 @@
  3) prepareStatement 사용하기
  * prepareStatement를 사용하면 특수문자를 자동으로 escaping 해준다.(전달인자를 ?로 받는것) 이를 활용해 서버에서 필터링 과정을 통해 공격을 방어 할 수 있다.   
 
+## 인텔리제이 단축키 (윈도우 & Linux)
+### 일반적 단축키
+- ALt + 0~9 : 각 단축키에 해당하는 도구창 열기
+  - ALt + 0 : 깃 커밋 및 푸시 도구창 열람 ***
+  - ALt + 1 : 프로젝트 도구창 열람 **
+  - ALt + 2 : favorites(처음 보는 창이긴한데 breakPoint 볼수 있다는 점이 장점인듯) 도구창 열람 *
+  - ALt + 3 : 하단 Find 도구창 열람
+  - ALt + 4 : 하단 Run 도구창 열람 *
+  - ALt + 5 : 하단 Debug 도구창 열람 *
+  - ALt + 6 : 하단 Problems 도구창 열람
+  - ALt + 7 : structure 도구창 열람 * 
+  - ALt + 8 : 하단 service 도구창 열람
+  - ALt + 9 : 하단 git 도구창 열람 ****
+- Ctrl + s : 모두저장
+- Ctrl + shift + F12 : 편집기 영역을 최대 크기로 토글
+- Ctrl + shift + I : 현재 프로필 기준으로 현재 파일검사
+- Ctrl + Alt + S : 설정창(Setting) 열기 ***
+- Ctrl + Alt + shift + S : 프로젝트 구조창(Project Structure) 열기 ***
+
+
+
+
 ### 멀티모듈
 **회사 코드와 https://techblog.woowahan.com/2637/ 블로그 글을 참고하여 이해용도로 작성**
