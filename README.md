@@ -328,7 +328,93 @@
         useJUnitPlatform()
     }
   ```
-  * 
+  * plugins 
+    * 프로젝트를 빌드하기 위해서 여러가지 작업을 처리해줘야 합니다. 컴파일이나 jar파일 생성같은 작업들입니다.
+    * 이런 작업들을 해주는 플러그인이 존재하고 plugins 블록안에 필요한 플러그 인을 지정해주고 이런 플러그인 들은 필요한 과정들을 task로 포함하고 있습니다. 
+    * 그래서 빌드시 필요한 과정들을 플러그인들의 내부 task가 진행을 해주게 됩니다.
+    * 따라서 빌드시에 필요한 플러그인들을 파악해 배치 시켜야 합니다.
+  * repository
+    * repository는 저장소 정보를 관리하는 프로퍼티입니다. 
+    * 로컬 환겨이나 네트워크에 라이브러리를 공개하고 그 주소를 저장소로 등록하면 저장소에 있는 라이브러리를 그레이들이 취득하여 이용할수 있는 구조 입니다.
+    * 위의 코드엔 mavenCentral() 이라는 메서드를 통해 중앙저장소를 이용할 수 있고 jCenter() 메서드를 통해 jCenter 저장소를 이용할 수도 있습니다.
+    * 저장소는 각종 라이브러리등이 등록된 일종의 소프트웨어 보관 장소라고 할 수 있습니다. 저장소에는 각종 프로그램이 등록되있어 그레들은 저장소로 부터 필요하나 라이브러리를 다운로드 하여 이용할수 있습니다.
+    * 만약 중앙저장소에 공개되지 않거나 공개가 힘든경우는 로컬 저장소를 이용하면 됩니다.
+  * dependencies
+    > Dependencies는 의존성에 관한 설정을 관리하는 프로퍼티 입니다. 여기에 필요한 라이브러리등의 정보를 기술하면 그 라이브러리를 참조할 수 있습니다. 
+    - implementation: 컴파일시 implementation에 지정한 라이브러리에 접근할 수 있다는 명세입니다.
+    - testImplementation: 테스트 컴파일시 testImplementation에 지정한 라이브러리에 접근할 수 있다는 명세입니다.
+    - compileOnly : compileOnly로 명시된 라이브러리는 컴파일 시에만 사용한다는 의미입니다
+    - runtimeOnly : runtimeOnly로 명시된 라이브러리는 런타임 시에만 사용한다는 의미입니다
+  #### 멀티모듈일때 build.gradle
+  ```
+  buildscript {
+    ext {
+        springBootVersion = '2.1.3.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath "io.spring.gradle:dependency-management-plugin:1.0.6.RELEASE"
+    }
+}
+
+allprojects {
+    group 'com.example'
+    version '1.0-SNAPSHOT'
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    sourceCompatibility = 1.8
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        testCompile group: 'junit', name: 'junit', version: '4.12'
+    }
+}
+
+project(':example') {
+    dependencies {
+        ....
+    }
+}
+
+project(':sub-example') {
+    dependencies {
+        ...
+    }
+}
+  ```
+  * ext 
+  > ext블록은 gradle의 모든 task에서 사용할 수 있는 일종의 전역변수를 선언하는 블록이라고 생각하면 됩니다
+  
+  * buildscript
+  > buildscript 블록은 빌드하는 동안 필요한 처리를 모아놓는 곳입니다. 이안에 dependencies와 repositories가 포함 될수 있습니다.
+  
+  * setting.gradle
+  > 그레들 파일중 setting.gradle이라는 파일이 있는데 여러가지로 사용할 수 있지만 대표적으로 멀티모듈 사용시에 설정파일로 사용된다
+  ```
+  rootProject.name = '임시명'
+  include 'module-web'
+  include 'module-core'
+  include 'module-common'
+  ```
+    - 위처럼 루트 모듈을 설정하고 하위 모듈을 명시해줘야 멀티모듈에 포함된다.
+    
+  * allprojects, subprojects, project
+  > 멀티모듈의 경우 이렇게 새로운 블록이 등작합니다. allprojects는 전체 프로젝트에, subprojects는 하위프로젝트에 그리고 project는 해당하는 프로젝트에만 동작하는 설정입니다.
+  
+  * task
+  > 사용자가 임의로 task를 작성해서 사용할 수 있습니다. 
+  
 
 ### 멀티모듈
 **회사 코드와 https://techblog.woowahan.com/2637/ 블로그 글을 참고하여 이해용도로 작성**
