@@ -273,5 +273,62 @@
 - Ctrl + Alt + <--> : 이전커서가 있는 곳으로 이동하는 명령어.
 - Ctrl + Alt + m : 드래그한 내용을 메소드로 전환해준다. ***
 
+### Gradle
+> 입사전까진 메이븐만 쓰면서 그레이들에 익숙치 않았는데 회사에선 그레이들을 자주 사용하는 바람에 익숙해졌습니다. 다만 정확한 동작원리나 개념은 부족하기에 기본내용 정리 용도로 적어 봅니다 
+  #### Build Tool이란
+  - gradle은 일종의 빌드도구(Build Tool) 입니다. 여기서 빌드라는 개념은 단순히 프로그램을 컴파일하여 어플리케이션을 생성하는 작업만을 의미하는 것이 아닙니다
+  - 개발한 소프트웨어가 제품으로 만들어지는 일련의 과정 즉, 컴파일, 테스트, 배포, 문서화 등의 작업을 포함하는 절차를 의미 합니다. 이때 빌드의 모든 과정을 자동으로 처리할 수 있도록 도와주는 것을 빌드 도구(Build Tool)라고 합니다.
+  #### Groovy, DSL 
+  - gradle은 groovy라고 하는 JVM기반의 동적 타이핑 언어를 사용해서 기술됩니다. 
+  - 그런데 gradle은 groovy 문법 그 자체를 그대로 사용하지는 않고 '그루비 기반의 DSL을 사용합니다.'
+  - DSL은 도메인 고유 언어라고 불리는데 특정한 용도에 한정된 언어를 가리킵니다. 기반 언어가 있지만 그언어 자체는 아닌 특정용도에 맞게 해당 언어를 기반으로 각색된 것이라고 합니다.
+  - gradle에 사용되는 언어는 groovy를 기반으로 작성도니 gradle DSL입니다.
+  #### build.gradle
+  > build.gradle은 gradle에서 빌드 작업에 필요한 기본 설정, 동작등을 정의하는 파일입니다. 아래는 인텔리제이에서 스프링 프로젝트를 생성하고 몇가지 의존성을 추가했을때의 기본 형태입ㄴ디ㅏ.
+  ```
+  plugins {
+        id 'org.springframework.boot' version '2.3.1.RELEASE'
+        id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+        id 'java'
+    }
+    
+    group = 'com.example'
+    version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = '1.8'
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+        implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+        implementation 'org.springframework.boot:spring-boot-starter-security'
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'org.springframework.kafka:spring-kafka'
+        compileOnly 'org.projectlombok:lombok'
+        runtimeOnly 'com.h2database:h2'
+        runtimeOnly 'mysql:mysql-connector-java'
+        annotationProcessor 'org.projectlombok:lombok'
+        testImplementation('org.springframework.boot:spring-boot-starter-test') {
+            exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+        }
+        testImplementation 'org.springframework.kafka:spring-kafka-test'
+        testImplementation 'org.springframework.security:spring-security-test'
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+  ```
+  * 
+
 ### 멀티모듈
 **회사 코드와 https://techblog.woowahan.com/2637/ 블로그 글을 참고하여 이해용도로 작성**
